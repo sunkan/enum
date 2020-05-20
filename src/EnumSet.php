@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sunkan\Enum;
 
@@ -13,7 +13,7 @@ class EnumSet implements \Countable
         if ($enumClass === null) {
             return;
         }
-        if (!class_exists($enumClass) || !\in_array(Enum::class, class_parents($enumClass, false), true)) {
+        if (!class_exists($enumClass) || !\in_array(EnumInterface::class, class_implements($enumClass, false), true)) {
             throw new \InvalidArgumentException('$enumClass must inherit Enum');
         }
 
@@ -26,6 +26,7 @@ class EnumSet implements \Countable
         $types = explode(',', $value);
         foreach ($types as $type) {
             try {
+                /** @var EnumInterface $enumClass */
                 $set->attach($enumClass::fromValue($type));
             }
             catch (\UnexpectedValueException $e) {
@@ -44,12 +45,12 @@ class EnumSet implements \Countable
             throw new \BadMethodCallException('Set not fully initialized. Need to specify $enumClass');
         }
 
-        /** @var Enum $enumClass */
+        /** @var EnumInterface $enumClass */
         $enumClass = $this->enumClass;
         $this->attach($enumClass::fromValue($value));
     }
 
-    public function attach(Enum $enum): void
+    public function attach(EnumInterface $enum): void
     {
         if (!$this->enumClass) {
             $this->enumClass = \get_class($enum);
@@ -69,7 +70,7 @@ class EnumSet implements \Countable
         $this->value = implode(',', $this->set);
     }
 
-    public function detach(Enum $enum): void
+    public function detach(EnumInterface $enum): void
     {
         $removeIndex = -1;
         foreach ($this->set as $index => $set) {
@@ -86,7 +87,7 @@ class EnumSet implements \Countable
         $this->value = implode(',', $this->set);
     }
 
-    public function have(Enum $enum): bool
+    public function have(EnumInterface $enum): bool
     {
         foreach ($this->set as $set) {
             if ($enum->is($set)) {
