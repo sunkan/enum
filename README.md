@@ -1,5 +1,7 @@
 # PHP Enum implementation
 
+![Build Status](https://github.com/sunkan/enum/workflows/CI/badge.svg)
+
 ## Installation
 
 ```
