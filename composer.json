@@ -3,7 +3,7 @@
   "description": "Enum classes",
   "type": "library",
   "require-dev": {
-    "phpunit/phpunit": "^7.0"
+    "phpunit/phpunit": "^8.0"
   },
   "autoload": {
     "psr-4": {

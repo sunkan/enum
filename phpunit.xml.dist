@@ -1,12 +1,15 @@
-<phpunit bootstrap="./phpunit-bootstrap.php">
-    <testsuites>
-        <testsuite name="enum">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php">
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
+            <exclude>
+            </exclude>
         </whitelist>
     </filter>
+    <testsuites>
+        <testsuite name="enum">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

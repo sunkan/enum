@@ -12,7 +12,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * getValue()
      */
-    public function testGetValue()
+    public function testGetValue(): void
     {
         $value = EnumFixture::fromValue(EnumFixture::BAR);
         $this->assertEquals(EnumFixture::BAR, $value->getValue());
@@ -21,7 +21,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * getKey()
      */
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $value = EnumFixture::FOO();
         $this->assertEquals('FOO', $value->getKey());
@@ -30,11 +30,11 @@ class EnumTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidValueProvider
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionMessage is not part of the enum Sunkan\Enum\EnumFixture
      */
-    public function testCreatingEnumWithInvalidValue($value)
+    public function testCreatingEnumWithInvalidValue($value): void
     {
+        $this->expectExceptionMessage("is not part of the enum Sunkan\Enum\EnumFixture");
+        $this->expectException(\UnexpectedValueException::class);
         EnumFixture::fromValue($value);
     }
 
@@ -42,7 +42,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
      * Contains values not existing in EnumFixture
      * @return array
      */
-    public function invalidValueProvider()
+    public function invalidValueProvider(): array
     {
         return array(
             "string" => array('test'),
@@ -54,12 +54,12 @@ class EnumTest extends \PHPUnit\Framework\TestCase
      * __toString()
      * @dataProvider toStringProvider
      */
-    public function testToString($expected, $enumObject)
+    public function testToString($expected, $enumObject): void
     {
         $this->assertSame($expected, (string) $enumObject);
     }
 
-    public function toStringProvider()
+    public function toStringProvider(): array
     {
         return array(
             array(EnumFixture::FOO, EnumFixture::FOO()),
@@ -71,7 +71,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * keys()
      */
-    public function testKeys()
+    public function testKeys(): void
     {
         $values = EnumFixture::keys();
         $expectedValues = array(
@@ -90,7 +90,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * values()
      */
-    public function testValues()
+    public function testValues(): void
     {
         $values = EnumFixture::values();
         $expectedValues = array(
@@ -109,7 +109,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * toArray()
      */
-    public function testToArray()
+    public function testToArray(): void
     {
         $values = EnumFixture::toArray();
         $expectedValues = array(
@@ -128,20 +128,17 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * __callStatic()
      */
-    public function testStaticAccess()
+    public function testStaticAccess(): void
     {
         $this->assertSame(EnumFixture::FOO(), EnumFixture::FOO());
         $this->assertSame(EnumFixture::BAR(), EnumFixture::BAR());
         $this->assertSame(EnumFixture::NUMBER(), EnumFixture::NUMBER());
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage No static method or enum constant 'UNKNOWN' in class
-     *                           UnitTest\Sunkan\Enum\Enum\EnumFixture
-     */
-    public function testBadStaticAccess()
+    public function testBadStaticAccess(): void
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage("No static method or enum constant 'UNKNOWN' in class Sunkan\Enum\EnumFixture");
         EnumFixture::UNKNOWN();
     }
 
@@ -149,12 +146,12 @@ class EnumTest extends \PHPUnit\Framework\TestCase
      * isValid()
      * @dataProvider isValidProvider
      */
-    public function testIsValid($value, $isValid)
+    public function testIsValid($value, $isValid): void
     {
         $this->assertSame($isValid, EnumFixture::isValid($value));
     }
 
-    public function isValidProvider()
+    public function isValidProvider(): array
     {
         return [
             /**
@@ -176,7 +173,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * isValidKey()
      */
-    public function testIsValidKey()
+    public function testIsValidKey(): void
     {
         $this->assertTrue(EnumFixture::isValidKey('FOO'));
         $this->assertFalse(EnumFixture::isValidKey('BAZ'));
@@ -188,12 +185,12 @@ class EnumTest extends \PHPUnit\Framework\TestCase
      * @see https://github.com/myclabs/php-enum/issues/13
      * @dataProvider searchProvider
      */
-    public function testSearch($value, $expected)
+    public function testSearch($value, $expected): void
     {
         $this->assertSame($expected, EnumFixture::search($value));
     }
 
-    public function searchProvider()
+    public function searchProvider(): array
     {
         return array(
             array('foo', 'FOO'),
@@ -209,7 +206,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * equals()
      */
-    public function testEquals()
+    public function testEquals(): void
     {
         $foo = EnumFixture::fromValue(EnumFixture::FOO);
         $number = EnumFixture::fromValue(EnumFixture::NUMBER);
@@ -223,7 +220,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * equals()
      */
-    public function testEqualsComparesProblematicValuesProperly()
+    public function testEqualsComparesProblematicValuesProperly(): void
     {
         $false = EnumFixture::fromValue(EnumFixture::PROBLEMATIC_BOOLEAN_FALSE);
         $emptyString = EnumFixture::fromValue(EnumFixture::PROBLEMATIC_EMPTY_STRING);
@@ -238,7 +235,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * equals()
      */
-    public function testEqualsConflictValues()
+    public function testEqualsConflictValues(): void
     {
         $this->assertFalse(EnumFixture::FOO()->is(EnumConflict::FOO()));
         $this->assertFalse(EnumFixture::FOO() === EnumConflict::FOO());
@@ -247,7 +244,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     /**
      * jsonSerialize()
      */
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $this->assertJsonEqualsJson('"foo"', json_encode(EnumFixture::FOO()));
         $this->assertJsonEqualsJson('"bar"', json_encode(EnumFixture::BAR()));
@@ -258,20 +255,20 @@ class EnumTest extends \PHPUnit\Framework\TestCase
         $this->assertJsonEqualsJson('false', json_encode(EnumFixture::PROBLEMATIC_BOOLEAN_FALSE()));
     }
 
-    public function testNullableEnum()
+    public function testNullableEnum(): void
     {
         $this->assertNull(EnumFixture::PROBLEMATIC_NULL()->getValue());
         $this->assertNull(EnumFixture::fromValue(EnumFixture::PROBLEMATIC_NULL)->getValue());
         $this->assertNull(EnumFixture::fromValue(EnumFixture::PROBLEMATIC_NULL)->jsonSerialize());
     }
 
-    public function testBooleanEnum()
+    public function testBooleanEnum(): void
     {
         $this->assertFalse(EnumFixture::PROBLEMATIC_BOOLEAN_FALSE()->getValue());
         $this->assertFalse(EnumFixture::fromValue(EnumFixture::PROBLEMATIC_BOOLEAN_FALSE)->jsonSerialize());
     }
 
-    private function assertJsonEqualsJson($json1, $json2)
+    private function assertJsonEqualsJson($json1, $json2): void
     {
         $this->assertJsonStringEqualsJsonString($json1, $json2);
     }
