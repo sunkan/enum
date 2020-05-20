@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sunkan\Enum;
 
@@ -12,7 +12,7 @@ namespace Sunkan\Enum;
  * @author Mirosław Filip <mirfilip@gmail.com>
  * @author Andreas Sundqvist <andreas@oak-valley.se>
  */
-abstract class Enum implements \JsonSerializable
+abstract class Enum implements \JsonSerializable, EnumInterface
 {
     /**
      * Enum value
@@ -43,7 +43,7 @@ abstract class Enum implements \JsonSerializable
     }
 
     /**
-     * @return static
+     * @inheritDoc
      */
     public static function fromValue($value)
     {
@@ -61,7 +61,7 @@ abstract class Enum implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
     public function getValue()
     {
@@ -69,9 +69,7 @@ abstract class Enum implements \JsonSerializable
     }
 
     /**
-     * Returns the enum key (i.e. the constant name).
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function getKey()
     {
@@ -87,14 +85,9 @@ abstract class Enum implements \JsonSerializable
     }
 
     /**
-     * Compares one Enum with another.
-     *
-     * This method is final, for more information read https://github.com/myclabs/php-enum/issues/4
-     *
-     * @param Enum $enum
-     * @return bool True if Enums are equal, false if not equal
+     * @inheritDoc
      */
-    final public function is(Enum $enum): bool
+    final public function is(EnumInterface $enum): bool
     {
         return $this->getValue() === $enum->getValue() && static::class === \get_class($enum);
     }
