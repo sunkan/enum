@@ -13,8 +13,13 @@ class EnumSet implements \Countable
         if ($enumClass === null) {
             return;
         }
-        if (!class_exists($enumClass) || !\in_array(EnumInterface::class, class_implements($enumClass, false), true)) {
-            throw new \InvalidArgumentException('$enumClass must inherit Enum');
+
+        if (!(class_exists($enumClass) || interface_exists($enumClass))) {
+            throw new \InvalidArgumentException("$enumClass not found");
+        }
+
+        if (!\in_array(EnumInterface::class, class_implements($enumClass, false), true)) {
+            throw new \InvalidArgumentException("$enumClass must implement EnumInterface");
         }
 
         $this->enumClass = $enumClass;
