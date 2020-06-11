@@ -241,6 +241,12 @@ class EnumTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(EnumFixture::FOO() === EnumConflict::FOO());
     }
 
+    public function testInEnum(): void
+    {
+        $this->assertFalse(EnumFixture::FOO()->in(EnumFixture::BAR(), EnumFixture::NUMBER()));
+        $this->assertTrue(EnumFixture::FOO()->in(EnumFixture::BAR(), EnumFixture::FOO()));
+    }
+
     /**
      * jsonSerialize()
      */

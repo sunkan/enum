@@ -92,6 +92,16 @@ abstract class Enum implements \JsonSerializable, EnumInterface
         return $this->getValue() === $enum->getValue() && static::class === \get_class($enum);
     }
 
+    final public function in(EnumInterface ...$enums): bool
+    {
+        foreach ($enums as $enum) {
+            if ($this->is($enum)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Returns the names (keys) of all constants in the Enum class
      *
