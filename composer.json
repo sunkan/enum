@@ -2,6 +2,7 @@
   "name": "sunkan/enum",
   "description": "Enum classes",
   "type": "library",
+  "licenes": "MIT",
   "require-dev": {
     "phpunit/phpunit": "^8.0"
   },
