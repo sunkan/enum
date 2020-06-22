@@ -57,6 +57,7 @@ class EnumTest extends \PHPUnit\Framework\TestCase
     public function testToString($expected, $enumObject): void
     {
         $this->assertSame($expected, (string) $enumObject);
+        $this->assertSame($expected, $enumObject->toString());
     }
 
     public function toStringProvider(): array

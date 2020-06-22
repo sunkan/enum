@@ -84,6 +84,11 @@ abstract class Enum implements \JsonSerializable, EnumInterface
         return (string)$this->value;
     }
 
+    public function toString(): string
+    {
+        return (string)$this->value;
+    }
+
     /**
      * @inheritDoc
      */

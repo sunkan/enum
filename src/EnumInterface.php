@@ -43,4 +43,8 @@ interface EnumInterface
     public function is(EnumInterface $enum): bool;
 
     public function __toString();
+
+    /* added in next version
+    public function toString(): string;
+    */
 }
