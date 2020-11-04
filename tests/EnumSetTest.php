@@ -3,6 +3,9 @@
 namespace Sunkan\Enum;
 
 use PHPUnit\Framework\TestCase;
+use Sunkan\Enum\Fixtures\TestEnum1;
+use Sunkan\Enum\Fixtures\TestEnum2;
+use Sunkan\Enum\Fixtures\TestEnumInterface;
 
 class EnumSetTest extends TestCase
 {
@@ -115,5 +118,20 @@ class EnumSetTest extends TestCase
         $this->assertCount(1, $set);
 
         $this->assertTrue($set->have($enum));
+    }
+
+    public function testSetWithInterfaceType()
+    {
+        $set = new EnumSet(TestEnumInterface::class);
+        $set->attach(TestEnum1::ADMIN());
+
+        $this->assertTrue($set->have(TestEnum2::ADMIN()));
+    }
+
+    public function testInvalidSetType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(self::class . ' must implement EnumInterface');
+        new EnumSet(self::class);
     }
 }

@@ -5,6 +5,7 @@ namespace Sunkan\Enum;
 class EnumSet implements \Countable
 {
     private $value;
+    /** @var EnumInterface[] */
     private $set = [];
     private $enumClass;
 
@@ -94,8 +95,12 @@ class EnumSet implements \Countable
 
     public function have(EnumInterface $enum): bool
     {
+        $isInterfaceBased = interface_exists($this->enumClass);
         foreach ($this->set as $set) {
             if ($enum->is($set)) {
+                return true;
+            }
+            if ($isInterfaceBased && $enum->getValue() === $set->getValue()) {
                 return true;
             }
         }
