@@ -4,12 +4,15 @@ namespace Sunkan\Enum;
 
 class EnumSet implements \Countable
 {
-    private $value;
     /** @var EnumInterface[] */
     private $set = [];
+    /** @var class-string|null */
     private $enumClass;
 
-    public function __construct(?string $enumClass = null)
+    /**
+     * @param class-string|null $enumClass
+     */
+    public final function __construct(?string $enumClass = null)
     {
         if ($enumClass === null) {
             return;
@@ -19,13 +22,18 @@ class EnumSet implements \Countable
             throw new \InvalidArgumentException("$enumClass not found");
         }
 
-        if (!\in_array(EnumInterface::class, class_implements($enumClass, false), true)) {
+        if (!\in_array(EnumInterface::class, (array)class_implements($enumClass, false), true)) {
             throw new \InvalidArgumentException("$enumClass must implement EnumInterface");
         }
 
         $this->enumClass = $enumClass;
     }
 
+    /**
+     * @param mixed $value
+     * @param class-string|null $enumClass
+     * @return static
+     */
     public static function fromValue($value, string $enumClass = null, bool $silent = false)
     {
         $set = new static($enumClass);
@@ -45,6 +53,9 @@ class EnumSet implements \Countable
         return $set;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function attachValue($value): void
     {
         if (!$this->enumClass) {
@@ -72,8 +83,6 @@ class EnumSet implements \Countable
             }
         }
         $this->set[] = $enum;
-
-        $this->value = implode(',', $this->set);
     }
 
     public function detach(EnumInterface $enum): void
@@ -89,13 +98,11 @@ class EnumSet implements \Countable
         if ($removeIndex !== -1) {
             unset($this->set[$removeIndex]);
         }
-
-        $this->value = implode(',', $this->set);
     }
 
     public function have(EnumInterface $enum): bool
     {
-        $isInterfaceBased = interface_exists($this->enumClass);
+        $isInterfaceBased = $this->enumClass ? interface_exists($this->enumClass) : false;
         foreach ($this->set as $set) {
             if ($enum->is($set)) {
                 return true;
