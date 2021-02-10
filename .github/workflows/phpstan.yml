@@ -1,4 +1,4 @@
-name: CI
+name: "PHPStan"
 
 on:
   - push
@@ -9,24 +9,14 @@ env:
 
 jobs:
   tests:
-    name: "CI"
+    name: "PHPStan"
+
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
+
     strategy:
-      fail-fast: false
       matrix:
         php-version:
-          - "7.1"
-          - "7.2"
-          - "7.3"
           - "7.4"
-          - "8.0"
-        experimental:
-          - false
-        include:
-          - php-version: "8.1"
-            composer-options: "--ignore-platform-reqs"
-            experimental: true
 
     steps:
       - name: "Checkout"
@@ -50,7 +40,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: "Install latest dependencies"
-        run: "composer update ${{ env.COMPOSER_FLAGS }} ${{ matrix.composer-options }}"
+        run: "composer update ${{ env.COMPOSER_FLAGS }}"
 
-      - name: "Run tests"
-        run: ./vendor/bin/phpunit -c phpunit.xml.dist
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse
