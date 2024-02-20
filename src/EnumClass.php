@@ -203,7 +203,7 @@ abstract class EnumClass implements \JsonSerializable, EnumInterface
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getValue();
     }
