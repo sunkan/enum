@@ -34,7 +34,7 @@ class EnumSet implements \Countable
      * @param class-string|null $enumClass
      * @return static
      */
-    public static function fromValue($value, string $enumClass = null, bool $silent = false)
+    public static function fromValue($value, ?string $enumClass = null, bool $silent = false)
     {
         $set = new static($enumClass);
         $types = explode(',', $value);
